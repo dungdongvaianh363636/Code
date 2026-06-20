@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Công Cụ Kiểm Tra Tải Server - Môi Trường Học Tập</title>
+    <style>
+        :root {
+            --bg: #0d0d0d;
+            --card: #1a1a1a;
+            --border: #2a2a2a;
+            --accent: #ff4444;
+            --accent2: #ff8800;
+            --text: #ccc;
+            --text2: #888;
+            --glow-red: 0 0 30px rgba(255, 68, 68, 0.4);
+            --glow-orange: 0 0 25px rgba(255, 136, 0, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', 'Courier New', monospace;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-image:
+                radial-gradient(ellipse at 50% 0%, rgba(255, 68, 68, 0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 100%, rgba(255, 136, 0, 0.04) 0%, transparent 60%);
+        }
+
+        /* ==================== CẢNH BÁO ==================== */
+        .overlay-warning {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 30px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .warning-box {
+            background: #111;
+            border: 3px solid #ff4444;
+            border-radius: 20px;
+            padding: 40px 30px;
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 0 60px rgba(255, 0, 0, 0.5);
+            animation: shake 0.6s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+            10%,
+            50%,
+            90% {
+                transform: translateX(-6px);
+            }
+            30%,
+            70% {
+                transform: translateX(6px);
+            }
+        }
+
+        .warning-box .icon-warn {
+            font-size: 4em;
+            animation: pulse-warn 1s infinite;
+        }
+
+        @keyframes pulse-warn {
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.7;
+            }
+        }
+
+        .warning-box h2 {
+            color: #ff4444;
+            font-size: 1.6em;
+            margin: 15px 0;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .warning-box .warning-text {
+            color: #ffaaaa;
+            font-size: 0.9em;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            text-align: left;
+            background: rgba(255, 0, 0, 0.08);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 3px solid #ff4444;
+        }
+
+        .warning-box .warning-text strong {
+            color: #ff6666;
+        }
+
+        .btn-understand {
+            padding: 16px 40px;
+            background: #ff4444;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 700;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            margin-top: 10px;
+        }
+
+        .btn-understand:hover {
+            background: #ff2222;
+            box-shadow: 0 0 40px rgba(255, 68, 68, 0.8);
+            transform: scale(1.03);
+        }
+
+        .btn-understand:disabled {
+            background: #555;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .countdown {
+            color: #ff8800;
+            font-size: 1.3em;
+            margin: 15px 0;
+            font-weight: 700;
+        }
+
+        /* ==================== MAIN CONTAINER ==================== */
+        .main-container {
+            width: 100%;
+            max-width: 850px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 25px 20px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 20%;
+            width: 60%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
+        }
+
+        .header h1 {
+            font-size: 1.8em;
+            font-weight: 800;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, #ff4444, #ff8800);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 5px;
+        }
+
+        .header .badge {
+            display: inline-block;
+            padding: 5px 14px;
+            background: rgba(255, 136, 0, 0.2);
+            border: 1px solid #ff8800;
+            border-radius: 20px;
+            font-size: 0.7em;
+            letter-spacing: 2px;
+            color: #ff8800;
+            margin-top: 8px;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 25px;
+        }
+
+        .card-title {
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 0.85em;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .input-group input {
+            flex: 1;
+            min-width: 200px;
+            padding: 14px 18px;
+            background: #0a0a0a;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #ff8800;
+            box-shadow: 0 0 15px rgba(255, 136, 0, 0.2);
+        }
+
+        .input-group select {
+            padding: 14px;
+            background: #0a0a0a;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            outline: none;
+            cursor: pointer;
+            min-width: 160px;
+        }
+
+        .input-group select:focus {
+            border-color: #ff8800;
+        }
+
+        .slider-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .slider-group label {
+            font-size: 0.8em;
+            letter-spacing: 1px;
+            color: var(--text2);
+            text-transform: uppercase;
+            min-width: 120px;
+        }
+
+        .slider-group input[type="range"] {
+            flex: 1;
+            min-width: 150px;
+            accent-color: #ff8800;
+            height: 6px;
+        }
+
+        .slider-group .slider-val {
+            color: #ff8800;
+            font-weight: 700;
+            min-width: 80px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: all 0.3s;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .btn-attack {
+            background: linear-gradient(135deg, #ff4444, #cc0000);
+            color: #fff;
+            flex: 2;
+            min-width: 180px;
+        }
+        .btn-attack:hover:not(:disabled) {
+            box-shadow: var(--glow-red);
+            transform: translateY(-2px);
+        }
+        .btn-attack:disabled {
+            background: #444;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-stop {
+            background: #333;
+            border: 2px solid #ff4444;
+            color: #ff4444;
+            flex: 1;
+            min-width: 100px;
+        }
+        .btn-stop:hover {
+            background: rgba(255, 68, 68, 0.15);
+            box-shadow: var(--glow-red);
+        }
+
+        .btn-reset {
+            background: transparent;
+            border: 2px solid #555;
+            color: #aaa;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .stat-box {
+            background: #0a0a0a;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+        .stat-box .stat-num {
+            font-family: 'Courier New', monospace;
+            font-size: 1.6em;
+            font-weight: 700;
+            color: #ff4444;
+        }
+        .stat-box .stat-label {
+            font-size: 0.7em;
+            color: var(--text2);
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        /* Progress */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #1a1a1a;
+            border-radius: 10px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff4444, #ff8800);
+            border-radius: 10px;
+            transition: width 0.3s;
+            width: 0%;
+            box-shadow: 0 0 15px rgba(255, 68, 68, 0.6);
+        }
+
+        /* Log */
+        .log-area {
+            background: #050505;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 15px;
+            max-height: 280px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.78em;
+            line-height: 1.7;
+            margin-top: 10px;
+        }
+        .log-area::-webkit-scrollbar {
+            width: 4px;
+        }
+        .log-area::-webkit-scrollbar-thumb {
+            background: #ff4444;
+            border-radius: 4px;
+        }
+
+        .log-line {
+            color: #aaa;
+        }
+        .log-line.sent {
+            color: #ffaa00;
+        }
+        .log-line.success {
+            color: #ff4444;
+        }
+        .log-line.error {
+            color: #ff0000;
+        }
+        .log-line.info {
+            color: #888;
+        }
+
+        /* Target info */
+        .target-info {
+            background: rgba(255, 68, 68, 0.08);
+            border: 1px dashed #ff4444;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .target-info span {
+            font-family: 'Courier New', monospace;
+            font-size: 0.8em;
+        }
+        .target-info .label {
+            color: #888;
+        }
+        .target-info .val {
+            color: #ff4444;
+            font-weight: 700;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.3em;
+            }
+            .btn {
+                padding: 12px 14px;
+                font-size: 0.7em;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== CẢNH BÁO BẮT BUỘC ==================== -->
+    <div class="overlay-warning" id="warningOverlay">
+        <div class="warning-box">
+            <div class="icon-warn">⚠️</div>
+            <h2>🛑 CẢNH BÁO NGHIÊM TÚC</h2>
+            <div class="warning-text">
+                <p><strong>🔴 ĐÂY LÀ CÔNG CỤ MÔ PHỎNG - CHỈ DÙNG CHO MỤC ĐÍCH HỌC TẬP</strong></p>
+                <br>
+                <p>✅ <strong>Mục đích hợp pháp:</strong></p>
+                <ul style="margin-left:20px; line-height:2;">
+                    <li>Kiểm tra khả năng chịu tải của <strong>CHÍNH MÁY CHỦ CỦA BẠN</strong></li>
+                    <li>Học tập về an ninh mạng trong môi trường lab nội bộ</li>
+                    <li>Nghiên cứu cách phòng chống tấn công từ chối dịch vụ</li>
+                </ul>
+                <br>
+                <p>❌ <strong>NGHIÊM CẤM:</strong></p>
+                <ul style="margin-left:20px; line-height:2;">
+                    <li>Tấn công bất kỳ website nào không thuộc quyền sở hữu của bạn</li>
+                    <li>Sử dụng vào mục đích phá hoại, trục lợi</li>
+                    <li>Vi phạm <strong>Điều 287 Bộ Luật Hình Sự VN</strong> (tội cản trở/gây rối mạng máy tính)</li>
+                </ul>
+                <br>
+                <p style="color:#ff6666; text-align:center;"><strong>⚠ Hành vi tấn công mạng trái phép có thể bị phạt tù từ 1-12 năm.</strong></p>
+                <p style="color:#ff8800; text-align:center;">Cảnh sát VN (A05/C05) hoàn toàn có thể truy vết mọi hoạt động mạng.</p>
+            </div>
+            <p class="countdown" id="countdownText">Vui lòng đọc kỹ - Có thể tiếp tục sau: <span id="cdTimer">15</span> giây</p>
+            <button class="btn-understand" id="btnAgree" disabled onclick="agreeWarning()">
+                ✅ TÔI ĐÃ HIỂU - CHỈ DÙNG CHO HỌC TẬP
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== MAIN APP ==================== -->
+    <div class="main-container" id="mainApp" style="display: none;">
+
+        <!-- HEADER -->
+        <div class="header">
+            <h1>⚡ STRESS TESTER TOOL</h1>
+            <span class="badge">🔬 MÔI TRƯỜNG HỌC TẬP - LAB NỘI BỘ</span>
+            <p style="color:#888; font-size:0.7em; margin-top:8px; letter-spacing:1px;">
+                Công cụ mô phỏng kiểm tra tải - Chỉ hoạt động trên localhost/127.0.0.1
+            </p>
+        </div>
+
+        <!-- CONFIG CARD -->
+        <div class="card">
+            <div class="card-title">⚙️ CẤU HÌNH YÊU CẦU</div>
+
+            <div class="input-group">
+                <input type="text" id="targetUrl" placeholder="http://127.0.0.1:8080 (CHỈ localhost)" value="http://127.0.0.1:8080" />
+                <select id="methodSelect">
+                    <option value="GET">GET Flood</option>
+                    <option value="POST">POST Flood</option>
+                    <option value="HEAD">HEAD Flood</option>
+                    <option value="RAND">Random UA Flood</option>
+                    <option value="SLOW">Slowloris (giữ kết nối)</option>
+                </select>
+            </div>
+
+            <div class="slider-group">
+                <label>🔗 Số connections:</label>
+                <input type="range" id="connSlider" min="10" max="500" value="100" step="10" oninput="updateSlider()" />
+                <span class="slider-val" id="connVal">100</span>
+            </div>
+
+            <div class="slider-group">
+                <label>⏱ Thời gian (giây):</label>
+                <input type="range" id="timeSlider" min="5" max="120" value="30" step="5" oninput="updateSlider()" />
+                <span class="slider-val" id="timeVal">30s</span>
+            </div>
+
+            <div class="slider-group">
+                <label>📡 Threads (luồng):</label>
+                <input type="range" id="threadSlider" min="1" max="20" value="5" step="1" oninput="updateSlider()" />
+                <span class="slider-val" id="threadVal">5</span>
+            </div>
+
+            <div class="btn-row">
+                <button class="btn btn-attack" id="btnStart" onclick="startStress()">🚀 BẮT ĐẦU KIỂM TRA</button>
+                <button class="btn btn-stop" id="btnStop" onclick="stopStress()" disabled>⏹ DỪNG</button>
+                <button class="btn btn-reset" onclick="resetAll()">↺ RESET</button>
+            </div>
+
+            <!-- TARGET INFO -->
+            <div class="target-info" id="targetInfo" style="display: none;">
+                <span><span class="label">Mục tiêu:</span> <span class="val" id="tUrl">-</span></span>
+                <span><span class="label">Phương thức:</span> <span class="val" id="tMethod">-</span></span>
+                <span><span class="label">Trạng thái:</span> <span class="val" id="tStatus">Đang chờ...</span></span>
+            </div>
+
+            <!-- PROGRESS -->
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <!-- STATS -->
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-num" id="statSent">0</div>
+                    <div class="stat-label">📤 Requests đã gửi</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-num" id="statOK">0</div>
+                    <div class="stat-label">✅ 200 OK</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-num" id="statErr">0</div>
+                    <div class="stat-label">❌ Lỗi / Timeout</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-num" id="statRPS">0</div>
+                    <div class="stat-label">⚡ Req/giây</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- LOG CARD -->
+        <div class="card">
+            <div class="card-title">📋 NHẬT KÝ HOẠT ĐỘNG</div>
+            <div class="log-area" id="logArea">
+                <span class="log-line info">[HỆ THỐNG] Công cụ đã sẵn sàng. Chỉ chấp nhận địa chỉ localhost (127.0.0.1).</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ============================================================
+           STRESS TESTER - CÔNG CỤ MÔ PHỎNG KIỂM TRA TẢI SERVER
+           ⚠ CHỈ HOẠT ĐỘNG VỚI LOCALHOST (127.0.0.1)
+           ⚠ Đây là công cụ GIẢ LẬP - KHÔNG gửi request thực tế ra ngoài
+           ⚠ Mục đích: Học tập về cơ chế HTTP Flood & cách phòng chống
+           ============================================================ */
+
+        // ==================== WARNING OVERLAY ====================
+        let countdownSeconds = 15;
+        const cdTimerEl = document.getElementById('cdTimer');
+        const btnAgree = document.getElementById('btnAgree');
+
+        const countdownInterval = setInterval(() => {
+            countdownSeconds--;
+            cdTimerEl.textContent = countdownSeconds;
+            if (countdownSeconds <= 0) {
+                clearInterval(countdownInterval);
+                btnAgree.disabled = false;
+                document.getElementById('countdownText').innerHTML =
+                    '<span style="color:#00ff88;">✅ Bạn đã đọc xong. Có thể tiếp tục.</span>';
+            }
+        }, 1000);
+
+        function agreeWarning() {
+            document.getElementById('warningOverlay').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'flex';
+            addLog('info', '[HỆ THỐNG] Người dùng đã xác nhận cảnh báo. Chỉ sử dụng cho học tập.');
+            addLog('info', '[HỆ THỐNG] Mọi request chỉ được phép gửi đến localhost (127.0.0.1).');
+        }
+
+        // ==================== SLIDER UPDATE ====================
+        function updateSlider() {
+            document.getElementById('connVal').textContent = document.getElementById('connSlider').value;
+            document.getElementById('timeVal').textContent = document.getElementById('timeSlider').value + 's';
+            document.getElementById('threadVal').textContent = document.getElementById('threadSlider').value;
+        }
+
+        // ==================== GLOBAL STATE ====================
+        let isRunning = false;
+        let attackInterval = null;
+        let progressInterval = null;
+        let startTime = null;
+        let totalSent = 0;
+        let totalOK = 0;
+        let totalErr = 0;
+        let rpsCounter = 0;
+        let rpsTimer = null;
+
+        // User-Agent pool để mô phỏng
+        const userAgents = [
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0',
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/119.0.0.0',
+            'Mozilla/5.0 (Linux; Android 13; SM-S908B) AppleWebKit/537.36 Chrome/120.0.0.0',
+            'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15',
+            'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/118.0.0.0',
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/119.0',
+            'Mozilla/5.0 (iPad; CPU OS 16_0 like Mac OS X) AppleWebKit/605.1.15',
+            'Mozilla/5.0 (Linux; Android 12; Pixel 6) AppleWebKit/537.36 Chrome/119.0.0.0',
+        ];
+
+        // ==================== LOGGING ====================
+        function addLog(type, message) {
+            const logArea = document.getElementById('logArea');
+            const line = document.createElement('span');
+            line.className = 'log-line ' + type;
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('vi-VN', { hour12: false });
+            line.textContent = `[${timeStr}] ${message}`;
+            logArea.appendChild(line);
+            logArea.appendChild(document.createElement('br'));
+            logArea.scrollTop = logArea.scrollHeight;
+
+            // Giới hạn log
+            const lines = logArea.getElementsByTagName('span');
+            if (lines.length > 200) {
+                lines[0].remove();
+                lines[0].remove(); // remove br
+            }
+        }
+
+        // ==================== VALIDATION ====================
+        function isValidTarget(url) {
+            // CHỈ cho phép localhost
+            try {
+                const u = new URL(url);
+                const host = u.hostname;
+                const allowed = ['127.0.0.1', 'localhost', '::1'];
+                if (allowed.includes(host)) {
+                    return true;
+                }
+                // Cũng cho phép các IP nội bộ phổ biến cho lab
+                if (host.startsWith('192.168.') || host.startsWith('10.') || host.startsWith('172.16.')) {
+                    return true;
+                }
+                return false;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        // ==================== SIMULATED REQUEST ====================
+        async function sendSimulatedRequest(url, method) {
+            totalSent++;
+            document.getElementById('statSent').textContent = totalSent;
+
+            // Mô phỏng độ trễ mạng
+            const delay = Math.floor(Math.random() * 300) + 50;
+            await new Promise(r => setTimeout(r, delay));
+
+            // Mô phỏng tỉ lệ thành công (90% OK, 10% lỗi)
+            const rand = Math.random();
+            if (rand < 0.85) {
+                totalOK++;
+                document.getElementById('statOK').textContent = totalOK;
+                rpsCounter++;
+                return { status: 200, ok: true };
+            } else if (rand < 0.95) {
+                totalErr++;
+                document.getElementById('statErr').textContent = totalErr;
+                rpsCounter++;
+                return { status: 503, ok: false, error: 'Service Unavailable (mô phỏng server quá tải)' };
+            } else {
+                totalErr++;
+                document.getElementById('statErr').textContent = totalErr;
+                rpsCounter++;
+                return { status: 0, ok: false, error: 'Connection Timeout (mô phỏng)' };
+            }
+        }
+
+        // ==================== MAIN STRESS FUNCTION ====================
+        async function startStress() {
+            if (isRunning) return;
+
+            const targetUrl = document.getElementById('targetUrl').value.trim();
+            const method = document.getElementById('methodSelect').value;
+            const connections = parseInt(document.getElementById('connSlider').value);
+            const duration = parseInt(document.getElementById('timeSlider').value);
+            const threads = parseInt(document.getElementById('threadSlider').value);
+
+            // Validate
+            if (!targetUrl) {
+                alert('⚠ Vui lòng nhập URL mục tiêu!');
+                return;
+            }
+            if (!isValidTarget(targetUrl)) {
+                alert('🛑 CHẶN: Chỉ được phép gửi request đến localhost (127.0.0.1) hoặc mạng nội bộ!\n\nURL: ' + targetUrl +
+                    ' bị từ chối.');
+                addLog('error', `[BẢO VỆ] Đã chặn request đến: ${targetUrl} - Không phải localhost!`);
+                return;
+            }
+
+            isRunning = true;
+            startTime = Date.now();
+            totalSent = 0;
+            totalOK = 0;
+            totalErr = 0;
+            rpsCounter = 0;
+
+            // Update UI
+            document.getElementById('btnStart').disabled = true;
+            document.getElementById('btnStop').disabled = false;
+            document.getElementById('targetInfo').style.display = 'flex';
+            document.getElementById('tUrl').textContent = targetUrl;
+            document.getElementById('tMethod').textContent = method;
+            document.getElementById('tStatus').textContent = '🟢 Đang kiểm tra...';
+            document.getElementById('tStatus').style.color = '#ff8800';
+
+            // Reset stats display
+            document.getElementById('statSent').textContent = '0';
+            document.getElementById('statOK').textContent = '0';
+            document.getElementById('statErr').textContent = '0';
+            document.getElementById('statRPS').textContent = '0';
+            document.getElementById('progressFill').style.width = '0%';
+
+            addLog('info', `[BẮT ĐẦU] Mục tiêu: ${targetUrl} | Phương thức: ${method} | Connections: ${connections} | Thời gian: ${duration}s | Threads: ${threads}`);
+            addLog('info', `[MÔ PHỎNG] Đây là mô phỏng - request KHÔNG thực sự gửi ra ngoài.`);
+
+            // RPS counter
+            rpsTimer = setInterval(() => {
+                document.getElementById('statRPS').textContent = rpsCounter;
+                rpsCounter = 0;
+            }, 1000);
+
+            // Progress bar
+            const totalDuration = duration * 1000;
+            progressInterval = setInterval(() => {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min((elapsed / totalDuration) * 100, 100);
+                document.getElementById('progressFill').style.width = progress + '%';
+                if (progress >= 100) {
+                    stopStress();
+                }
+            }, 500);
+
+            // Hàm chạy 1 thread
+            async function runThread(threadId) {
+                const batchSize = Math.ceil(connections / threads);
+                for (let i = 0; i < batchSize; i++) {
+                    if (!isRunning) break;
+                    const result = await sendSimulatedRequest(targetUrl, method);
+                    if (i % 10 === 0 && result.ok) {
+                        addLog('sent', `[Thread-${threadId}] Request #${totalSent} → ${result.status} OK`);
+                    }
+                    if (!result.ok && result.error) {
+                        addLog('error', `[Thread-${threadId}] Lỗi: ${result.error}`);
+                    }
+                }
+            }
+
+            // Khởi chạy tất cả thread
+            const threadPromises = [];
+            for (let t = 1; t <= threads; t++) {
+                threadPromises.push(runThread(t));
+            }
+
+            // Đặt timer dừng
+            attackInterval = setTimeout(() => {
+                stopStress();
+            }, totalDuration);
+
+            // Chạy liên tục trong thời gian quy định
+            async function loopUntilStop() {
+                while (isRunning) {
+                    const batchPromises = [];
+                    for (let t = 1; t <= threads; t++) {
+                        batchPromises.push(runThread(t));
+                    }
+                    await Promise.allSettled(batchPromises);
+                    if (!isRunning) break;
+                    await new Promise(r => setTimeout(r, 500)); // Nghỉ 500ms giữa các batch
+                }
+            }
+            loopUntilStop();
+        }
+
+        function stopStress() {
+            if (!isRunning) return;
+
+            isRunning = false;
+            clearTimeout(attackInterval);
+            clearInterval(progressInterval);
+            clearInterval(rpsTimer);
+
+            document.getElementById('btnStart').disabled = false;
+            document.getElementById('btnStop').disabled = true;
+            document.getElementById('tStatus').textContent = '🔴 Đã dừng';
+            document.getElementById('tStatus').style.color = '#ff4444';
+            document.getElementById('progressFill').style.width = '100%';
+
+            const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+            addLog('success', `[KẾT THÚC] Tổng: ${totalSent} requests | OK: ${totalOK} | Lỗi: ${totalErr} | Thời gian: ${elapsed}s`);
+            addLog('info', `[MÔ PHỎNG] Đây chỉ là dữ liệu mô phỏng - không có request thực tế nào được gửi.`);
+        }
+
+        function resetAll() {
+            stopStress();
+            totalSent = 0;
+            totalOK = 0;
+            totalErr = 0;
+            rpsCounter = 0;
+            document.getElementById('statSent').textContent = '0';
+            document.getElementById('statOK').textContent = '0';
+            document.getElementById('statErr').textContent = '0';
+            document.getElementById('statRPS').textContent = '0';
+            document.getElementById('progressFill').style.width = '0%';
+            document.getElementById('targetInfo').style.display = 'none';
+            document.getElementById('targetUrl').value = 'http://127.0.0.1:8080';
+            document.getElementById('connSlider').value = 100;
+            document.getElementById('timeSlider').value = 30;
+            document.getElementById('threadSlider').value = 5;
+            updateSlider();
+            addLog('info', '[HỆ THỐNG] Đã reset toàn bộ về mặc định.');
+        }
+
+        // ==================== INIT ====================
+        addLog('info', '[HỆ THỐNG] Khởi tạo hoàn tất. Sẵn sàng kiểm tra tải localhost.');
+        updateSlider();
+    </script>
+</body>
+</html>
